@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
@@ -57,7 +56,7 @@ public class RestEasyClientGet {
                     "http://localhost:8080/json/product/post");
             request.accept("application/json");
 
-            String input = "{\"id\":100,\"author\":\"name\"}";
+            String input = "{\"id\":100,\"author\":\"Uncle Bob\",\"title\":\"clean code\"}";
             request.body("application/json", input);
 
             ClientResponse<String> response = request.post(String.class);

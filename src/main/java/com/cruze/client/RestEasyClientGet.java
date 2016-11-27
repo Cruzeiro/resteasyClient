@@ -1,7 +1,11 @@
+package com.cruze.client;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.google.gson.Gson;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
@@ -39,15 +43,10 @@ public class RestEasyClientGet {
                         + response.getStatus());
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    new ByteArrayInputStream(response.getEntity().getBytes())));
+        Gson gson = new Gson();
+        Book book = gson.fromJson(response.getEntity(), Book.class);
 
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
+        System.out.println(book.toString());
 
     }
 
@@ -56,8 +55,12 @@ public class RestEasyClientGet {
                     "http://localhost:8080/json/product/post");
             request.accept("application/json");
 
-            String input = "{\"id\":100,\"author\":\"Uncle Bob\",\"title\":\"clean code\"}";
-            request.body("application/json", input);
+        Book book = new Book();
+        book.setAuthor("uncle Bob");
+        book.setId(23);
+        book.setTitle("cleanCode");
+
+            request.body("application/json", new Gson().toJson(book));
 
             ClientResponse<String> response = request.post(String.class);
 
